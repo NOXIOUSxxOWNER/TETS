@@ -1,0 +1,10 @@
+telebot
+Flask
+aiogram
+pyTelegramBotAPI
+pymongo
+requests
+certifi
+psutil
+pytz
+aiohttp

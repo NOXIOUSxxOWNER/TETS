@@ -1,9 +1,9 @@
 [
   {
-    "user_id": 7394865906,
-    "username": "@MustangWala",
-    "valid_until": "2024-12-08 20:02:47.679348",
-    "current_date": "2024-12-07 20:02:47.679401",
+    "user_id": 1396469531,
+    "username": "@ROLEXxxOWNER",
+    "valid_until": "2024-12-11 07:02:36.399433",
+    "current_date": "2024-12-10 07:02:36.399512",
     "plan": "Plan Premium"
   }
 ]
